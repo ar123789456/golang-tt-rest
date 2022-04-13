@@ -3,6 +3,8 @@ package delivery
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"rest/substr/usecase"
@@ -30,12 +32,20 @@ func TestPost(t *testing.T) {
 	r.POST("/rest/substr/find", NewHandler(usc).Post)
 
 	for code, inp := range testCase {
-		body, _ := json.Marshal(inp)
+		body, err := json.Marshal(inp)
+		if err != nil {
+			fmt.Println("jmo:", err)
+		}
 
 		w := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodPost, "/rest/substr/find", bytes.NewBuffer(body))
 		r.ServeHTTP(w, req)
-
+		defer req.Body.Close()
+		b, err := io.ReadAll(req.Body)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(string(b))
 		assert.Equal(t, code, w.Code)
 	}
 

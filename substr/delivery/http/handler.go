@@ -29,9 +29,10 @@ type output struct {
 func (h *Handler) Post(c *gin.Context) {
 	inp := new(input)
 	err := c.BindJSON(inp)
-	if err != nil || c.Request.Body == nil {
+	if err != nil || c.Request.Body == nil || len(inp.Text) == 0 {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
+
 	fmt.Println(inp)
 	c.JSON(http.StatusOK, &output{
 		Substring: h.useCase.FindLongestSubstring(inp.Text),
