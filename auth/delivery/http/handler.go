@@ -51,10 +51,12 @@ func (h *Handler) Get(c *gin.Context) {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
 	user, err := h.useCase.Get(id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
 	c.JSON(http.StatusOK, &GetOutput{
 		First_name: user.FirstName,
@@ -67,14 +69,17 @@ func (h *Handler) Put(c *gin.Context) {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
 	inp := new(CreatOrPutInput)
 	if err = c.BindJSON(inp); err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
 	err = h.useCase.Put(id, inp.First_name, inp.Last_name)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
 	c.Status(http.StatusOK)
 }
@@ -84,10 +89,12 @@ func (h *Handler) Delete(c *gin.Context) {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
 	err = h.useCase.Delete(id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
 	c.Status(http.StatusOK)
 }

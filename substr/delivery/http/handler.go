@@ -31,6 +31,7 @@ func (h *Handler) Post(c *gin.Context) {
 	err := c.BindJSON(inp)
 	if err != nil || c.Request.Body == nil || len(inp.Text) == 0 {
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
 
 	fmt.Println(inp)

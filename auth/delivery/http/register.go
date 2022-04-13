@@ -12,8 +12,8 @@ func RegisterUserEndpoints(router *gin.Engine, uc auth.UseCase) {
 	userEndpoints := router.Group(" /rest/user")
 	{
 		userEndpoints.POST("", h.Get)
-		userEndpoints.GET(":id", h.Get)
-		userEndpoints.PUT(":id", h.Put)
-		userEndpoints.DELETE(":id", h.Delete)
+		userEndpoints.GET("/:id", h.Get)
+		userEndpoints.PUT("/:id", h.Put)
+		userEndpoints.DELETE("/:id", h.Delete)
 	}
 }
