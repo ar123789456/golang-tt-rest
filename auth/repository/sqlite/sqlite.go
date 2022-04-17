@@ -5,17 +5,11 @@ import (
 	"rest/models"
 )
 
-const userTable = `CREATE TABLE user(
-	id INTEGER PRIMARY KEY AUTOINCREMENT, 
-	first_name TEXT,
-	last_name TEXT
-  );`
-
 type UserRepository struct {
 	DB *sql.DB
 }
 
-func NewUserRepository(db *sql.DB, table string) *UserRepository {
+func NewUserRepository(db *sql.DB) *UserRepository {
 	return &UserRepository{
 		DB: db,
 	}

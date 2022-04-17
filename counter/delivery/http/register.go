@@ -1,4 +1,4 @@
-package handler
+package http
 
 import (
 	"rest/counter"
@@ -9,7 +9,7 @@ import (
 func RegisterCounterEndpoints(router *gin.Engine, uc counter.ConterUseCase) {
 	h := NewHandler(uc)
 
-	counterEndpoints := router.Group(" /rest/counter")
+	counterEndpoints := router.Group("/rest/counter")
 	{
 		counterEndpoints.POST("/add/:i", h.Add)
 		counterEndpoints.POST("/sub/:i", h.Sub)

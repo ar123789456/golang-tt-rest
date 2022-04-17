@@ -1,4 +1,4 @@
-package handler
+package http
 
 import (
 	"net/http"
@@ -29,12 +29,16 @@ type CreatOutput struct {
 
 func (h *Handler) Create(c *gin.Context) {
 	inp := new(CreatOrPutInput)
-	if err := c.BindJSON(inp); err != nil {
+	err := c.BindJSON(inp)
+
+	if err != nil || len(inp.First_name) == 0 {
 		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
 	id, err := h.useCase.Create(inp.First_name, inp.Last_name)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
 	c.JSON(http.StatusOK, &CreatOutput{
 		ID: id,
